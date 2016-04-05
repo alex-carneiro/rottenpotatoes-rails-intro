@@ -11,14 +11,14 @@ class MoviesController < ApplicationController
   end
 
   def index
-    ratings = params[:ratings] == nil ? [] : params[:ratings].keys
-    puts "ratings = #{ratings}"
+    @ratings = params[:ratings] == nil ? [] : params[:ratings].keys
+    puts "ratings = #{@ratings}"
     if params[:sort]
-      @movies = ratings.length == 0 ? Movie.all.order("#{params[:sort]} ASC") : Movie.all.select{|p| ratings.include? p.rating}.order("#{params[:sort]} ASC")
+      @movies = @ratings.length == 0 ? Movie.all.order("#{params[:sort]} ASC") : Movie.all.select{|p| @ratings.include? p.rating}.order("#{params[:sort]} ASC")
       params[:sort] == "title" ? @title_class = "hilite" : @date_class = "hilite"
     else
       @title_class, @date_class = "", ""
-      @movies = ratings.length == 0 ? Movie.all : Movie.all.select{|p| ratings.include? p.rating}
+      @movies = @ratings.length == 0 ? Movie.all : Movie.all.select{|p| @ratings.include? p.rating}
     end
 
     @all_ratings = Movie.distinct.pluck(:rating)
