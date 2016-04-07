@@ -1,0 +1,7 @@
+Thu, 07 Apr 2016 19:17:56 +0000
+README.rdoc	Mon, 21 Mar 2016 12:04:08 +0000
+app/controllers/application_controller.rb	Mon, 21 Mar 2016 12:04:08 +0000
+app/controllers/movies_controller.rb	Thu, 07 Apr 2016 19:07:22 +0000
+app/helpers/application_helper.rb	Mon, 21 Mar 2016 12:04:08 +0000
+app/helpers/movies_helper.rb	Mon, 21 Mar 2016 12:04:08 +0000
+app/models/movie.rb	Tue, 05 Apr 2016 17:48:35 +0000
