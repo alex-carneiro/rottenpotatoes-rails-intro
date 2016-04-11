@@ -11,20 +11,20 @@ class MoviesController < ApplicationController
   end
 
   def index
-    session["sort"] = "" if not session["sort"]
-    session["ratings"] = "" if not session["ratings"]
-    session["sort"] = params[:sort] ? params[:sort] : session["sort"]
-    session["ratings"] = params[:ratings] ? params[:ratings] : session["ratings"]
-    @ratings = session[:ratings] == nil ? [] : session[:ratings]
-    
-    if session[:sort] == "title" or session[:sort] == "release_date"
-      @movies = @ratings.empty? ? Movie.order("#{session[:sort]} ASC").all : Movie.order("#{session[:sort]} ASC").all.select{|p| @ratings.include? p.rating}
-      session[:sort] == "title" ? @title_class = "hilite" : @date_class = "hilite"
-    else
-      @title_class, @date_class = "", ""
-      @movies = @ratings.empty? ? Movie.all : Movie.all.select{|p| @ratings.include? p.rating}
+    session[:ratings] = params[:ratings] if params[:ratings]
+    session[:sort] = params[:sort] if params[:sort]
+    @ratings = session[:ratings] ? session[:ratings].keys : {}
+    if (session[:ratings] && !params[:ratings]) || (session[:sort] && !params[:sort])
+      redirect_to movies_path(:ratings => session[:ratings], :sort => session[:sort])
     end
-
+    if session[:sort]
+      @movies = Movie.all.order("#{session[:sort]} ASC")
+      @movies = @movies.select {|m| @ratings.include? m.rating} if not @ratings.empty?
+      session[:sort] == 'title' ? @title_class = 'hilite': @date_class = 'hilite'
+    else
+      @title_class, @date_class = '', ''
+      @movies = @ratings.empty? ? Movie.all : Movie.all.select {|m| @ratings.include? m.rating} 
+    end
     @all_ratings = Movie.distinct.pluck(:rating)
   end
 
